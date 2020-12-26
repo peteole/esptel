@@ -3,15 +3,27 @@
 #include <ESPAsyncTCP.h>
 #include <ESPAsyncWebServer.h>
 #include <FS.h>
+#include <Adafruit_BMP280.h>
+#include <Wire.h>
 DNSServer dnsServer;
 AsyncWebServer server(80);
 
-
-
-
+Adafruit_BMP280 bmp; // use I2C interface
+Adafruit_Sensor *bmp_temp = bmp.getTemperatureSensor();
+Adafruit_Sensor *bmp_pressure = bmp.getPressureSensor();
 
 void setup()
 {
+	Serial.begin(9600);
+	Wire.begin(0, 2);
+	Serial.println(F("BMP280 Sensor event test"));
+
+	if (!bmp.begin(0x76))
+	{
+		Serial.println(F("Could not find a valid BMP280 sensor, check wiring!"));
+		while (1)
+			delay(10);
+	}
 	SPIFFS.begin();
 	WiFi.softAP("esp-captive");
 	dnsServer.start(53, "*", WiFi.softAPIP());
@@ -34,4 +46,17 @@ void setup()
 void loop()
 {
 	dnsServer.processNextRequest();
+	sensors_event_t temp_event, pressure_event;
+	bmp_temp->getEvent(&temp_event);
+	bmp_pressure->getEvent(&pressure_event);
+
+	Serial.print(F("Temperature = "));
+	Serial.print(temp_event.temperature);
+	Serial.println(" *C");
+
+	Serial.print(F("Pressure = "));
+	Serial.print(pressure_event.pressure);
+	Serial.println(" hPa");
+
+	Serial.println();
 }
