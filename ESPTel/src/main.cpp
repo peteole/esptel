@@ -30,6 +30,13 @@ void setup()
 	server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
 		request->send_P(200, "text/html", "This is a great content");
 	});
+	server.on("/data", HTTP_GET, [](AsyncWebServerRequest *request) {
+		sensors_event_t temp_event, pressure_event;
+		bmp_temp->getEvent(&temp_event);
+		bmp_pressure->getEvent(&pressure_event);
+		String JSON="{\"temperature\":"+String(temp_event.temperature)+", \"pressure\":"+String(pressure_event.pressure)+"}";
+		request->send_P(200, "application/json",&JSON[0]);
+	});
 	server.on("/home.html", HTTP_GET, [](AsyncWebServerRequest *request) {
 		request->send(SPIFFS, "/home.html", "text/html");
 	});
@@ -46,17 +53,4 @@ void setup()
 void loop()
 {
 	dnsServer.processNextRequest();
-	sensors_event_t temp_event, pressure_event;
-	bmp_temp->getEvent(&temp_event);
-	bmp_pressure->getEvent(&pressure_event);
-
-	Serial.print(F("Temperature = "));
-	Serial.print(temp_event.temperature);
-	Serial.println(" *C");
-
-	Serial.print(F("Pressure = "));
-	Serial.print(pressure_event.pressure);
-	Serial.println(" hPa");
-
-	Serial.println();
 }
