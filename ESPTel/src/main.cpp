@@ -43,6 +43,9 @@ void setup()
 	server.on("/main.js", HTTP_GET, [](AsyncWebServerRequest *request) {
 		request->send(SPIFFS, "/main.js", "text/javascript");
 	});
+	server.on("/tts.js", HTTP_GET, [](AsyncWebServerRequest *request) {
+		request->send(SPIFFS, "/tts.js", "text/javascript");
+	});
 	server.on("/main.css", HTTP_GET, [](AsyncWebServerRequest *request) {
 		request->send(SPIFFS, "/main.css", "text/css");
 	});
