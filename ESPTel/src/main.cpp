@@ -34,8 +34,8 @@ void setup()
 		sensors_event_t temp_event, pressure_event;
 		bmp_temp->getEvent(&temp_event);
 		bmp_pressure->getEvent(&pressure_event);
-		String JSON="{\"temperature\":"+String(temp_event.temperature)+", \"pressure\":"+String(pressure_event.pressure)+"}";
-		request->send_P(200, "application/json",&JSON[0]);
+		String JSON = "{\"temperature\":" + String(temp_event.temperature) + ", \"pressure\":" + String(pressure_event.pressure) + "}";
+		request->send_P(200, "application/json", &JSON[0]);
 	});
 	server.on("/home.html", HTTP_GET, [](AsyncWebServerRequest *request) {
 		request->send(SPIFFS, "/home.html", "text/html");
