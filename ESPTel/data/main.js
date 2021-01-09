@@ -20,19 +20,18 @@ async function saydata() {
         voice.speak(text + "   " + text2);
     }
 }
-
-var slider = document.getElementById("myRange");
-var output = document.getElementById("demo");
+const interval = 10;
+var slider = document.getElementById("updtime");
+var output = document.getElementById("sec");
 output.innerHTML = slider.value; // Display the default slider value
 
 // Update the current slider value (each time you drag the slider handle)
 slider.oninput = function () {
     output.innerHTML = this.value;
+    interval = parseInt(this.value);
 }
-//const period;
-//period = parseInt(document.getElementsByTagName("output"));
-function start() {
 
+function start() {
     setInterval(saydata, 10000);
 }
 

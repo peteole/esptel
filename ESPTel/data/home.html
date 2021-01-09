@@ -18,8 +18,10 @@
 
     <button onclick="loadVoices()">lade Stimmen</button>
 
-    <div class="slidecontainer">
-        <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+    <div>
+        <input type="range" id="updtime" min="1" max="30" value="10">
+        <label for="updtime">Update nach </label>
+        <p> <span id="sec"></span>s</p>
     </div>
 </body>
 
