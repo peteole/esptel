@@ -5,19 +5,35 @@ function loadVoices() {
     document.body.appendChild(voice.configGUI);
 }
 async function saydata() {
+
     let response = await fetch("/data")
     let data = await response.json()
-    console.log(data)
 
+    const text = "Temperatur: " + data.temperature + " °C";
+    document.getElementById("temperature-text").innerHTML = text;
 
-    const text1 = "Temperature " + data.temperature + " degrees celsius";
-    const header1 = document.getElementById("temperature-text");
-    header1.innerHTML = text1
-    voice.speak(text1);
-    let alt = 44330 * (1.0 - pow(data.pressure / 1013.25, 0.1903));
-    const text2 = "Altitude " + alt + " meters";
-    const header2 = document.getElementById("altitude-text");
-    header2.innerHTML = text2
-    voice.speak(text2);
+    const alt = parseInt(44330 * (1.0 - Math.pow(data.pressure / 1013.25, 0.1903)));
+    const text2 = "Höhe: " + alt + " m";
+    document.getElementById("altitude-text").innerHTML = text2;
 
+    if (voice != null) {
+        voice.speak(text + "   " + text2);
+    }
 }
+
+var slider = document.getElementById("myRange");
+var output = document.getElementById("demo");
+output.innerHTML = slider.value; // Display the default slider value
+
+// Update the current slider value (each time you drag the slider handle)
+slider.oninput = function () {
+    output.innerHTML = this.value;
+}
+//const period;
+//period = parseInt(document.getElementsByTagName("output"));
+function start() {
+
+    setInterval(saydata, 10000);
+}
+
+

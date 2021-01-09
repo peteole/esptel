@@ -1,19 +1,26 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Example page</title>
+    <title>ESP Hotspot</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
     <script src='tts.js'></script>
     <script src='main.js'></script>
 </head>
-<body>
-    <h1 id="temperature-text">Temperature: </h1>
-    <h1 id="altitude-text">Altitude: </h1>
-    <button onclick="saydata()">Rede</button>
 
-    <button onclick="loadVoices()">Lade Stimmen</button>
+<body>
+    <h1 id="temperature-text">no data </h1>
+    <h1 id="altitude-text">no data </h1>
+    <button onclick="start()">start</button>
+
+    <button onclick="loadVoices()">lade Stimmen</button>
+
+    <div class="slidecontainer">
+        <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+    </div>
 </body>
+
 </html>
