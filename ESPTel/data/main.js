@@ -4,6 +4,7 @@ function loadVoices() {
     voice = new Voice()
     document.body.appendChild(voice.configGUI);
 }
+
 async function saydata() {
 
     let response = await fetch("/data")
@@ -17,22 +18,15 @@ async function saydata() {
     document.getElementById("altitude-text").innerHTML = text2;
 
     if (voice != null) {
-        voice.speak(text + "   " + text2);
+        voice.speak(text2);
     }
-}
-const interval = 10;
-var slider = document.getElementById("updtime");
-var output = document.getElementById("sec");
-output.innerHTML = slider.value; // Display the default slider value
-
-// Update the current slider value (each time you drag the slider handle)
-slider.oninput = function () {
-    output.innerHTML = this.value;
-    interval = parseInt(this.value);
 }
 
 function start() {
-    setInterval(saydata, 10000);
+    setInterval(saydata, interval * 1000);
 }
+
+
+
 
 

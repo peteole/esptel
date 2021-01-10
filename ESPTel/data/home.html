@@ -7,22 +7,42 @@
     <title>ESP Hotspot</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
-    <script src='tts.js'></script>
-    <script src='main.js'></script>
+
+
 </head>
 
 <body>
     <h1 id="temperature-text">no data </h1>
     <h1 id="altitude-text">no data </h1>
-    <button onclick="start()">start</button>
+    <p>
 
-    <button onclick="loadVoices()">lade Stimmen</button>
+        <button onclick="start()">start</button>
 
-    <div>
-        <input type="range" id="updtime" min="1" max="30" value="10">
-        <label for="updtime">Update nach </label>
-        <p> <span id="sec"></span>s</p>
+        <button onclick="loadVoices()">lade Stimmen</button>
+    </p>
+    <p>
+    <h2>Dauer bis Update in Sekunden</h2>
+    <div class="slidecontainer">
+        <input type="range" min="1" max="30" value="10" class="slider" />
     </div>
+    <h2 class="sliderVal">T</h2>
+    </p>
+
+    <script src='tts.js'></script>
+    <script src='main.js'></script>
+    <script defer>
+        var slider = document.querySelector(".slider");
+        var output = document.querySelector(".sliderVal");
+        var interval = 10;
+        output.innerHTML = slider.value;
+        slider.oninput = function () {
+            output.innerHTML = this.value;
+            interval = parseInt(this.value);
+        }
+
+
+    </script>
+
 </body>
 
 </html>
