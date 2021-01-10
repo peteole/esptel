@@ -7,7 +7,7 @@
     <title>ESP Hotspot</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
-
+    <script defer src='main.js'></script>
 
 </head>
 
@@ -17,7 +17,7 @@
     <p>
 
         <button onclick="start()">start</button>
-
+        <button onclick="altreset()">Höhe Reset</button>
         <button onclick="loadVoices()">lade Stimmen</button>
     </p>
     <p>
@@ -28,20 +28,7 @@
     <h2 class="sliderVal">T</h2>
     </p>
 
-    <script src='tts.js'></script>
-    <script src='main.js'></script>
-    <script defer>
-        var slider = document.querySelector(".slider");
-        var output = document.querySelector(".sliderVal");
-        var interval = 10;
-        output.innerHTML = slider.value;
-        slider.oninput = function () {
-            output.innerHTML = this.value;
-            interval = parseInt(this.value);
-        }
 
-
-    </script>
 
 </body>
 
