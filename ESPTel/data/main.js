@@ -1,10 +1,11 @@
-const slider = document.querySelector(".slider");
-const output = document.querySelector(".sliderVal");
 var interval;
 var response;
 var data;
 var alt;
 var altBias = 0;
+
+const slider = document.querySelector(".slider");
+const output = document.getElementById("sliderVal");
 output.innerHTML = slider.value;
 
 slider.oninput = function () {
@@ -31,7 +32,6 @@ class Voice {
         selector.onchange();
     }
     /**
-     * 
      * @param {string} text text to speak
      */
     speak(text) {
@@ -61,20 +61,23 @@ function saydata() {
 
     alt = parseInt(44330 * (1.0 - Math.pow(data.pressure / 1013.25, 0.1903)));
     const height = alt - altBias;
-    const text2 = "Höhe: " + height + " m";
-    document.getElementById("altitude-text").innerHTML = text2;
+    const text2 = "height: " + height + " m";
+    document.getElementById("height-text").innerHTML = text2;
+    const text3 = "altitude: " + alt + " m";
+    document.getElementById("altitude-text").innerHTML = text3;
+
 
     if (voice != null) {
         voice.speak(text + "  " + text2);
     }
 }
-function altreset() {
+async function altreset() {
     getData();
     altBias = alt;
 }
 
 
-async function start() {
+function start() {
     saydata();
     setTimeout(start, interval * 1000)
 

@@ -1,11 +1,29 @@
 body{
-    background-color: rgb(58, 95, 116);
+    background-color: rgb(116, 137, 150);
+}
+button {
+  background-color: #5c6a80; /* Green */
+  border: #1b1f25;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 20px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+button :hover {
+  background-color: #97a097;
+  color: rgb(107, 77, 77);
 }
 p,
 label {
     font: 1rem 'Fira Sans', sans-serif;
 }
-
+span {
+    font-size:160%;
+}
 input {
     margin: .4rem;
 }
@@ -15,8 +33,8 @@ input {
    .slider {
       -webkit-appearance: none;
       width: 100%;
-      height: 25px;
-      background: #465d68;
+      height: 40px;
+      background: #337c9e;
       outline: none;
       opacity: 0.7;
       -webkit-transition: 0.2s;
@@ -28,12 +46,12 @@ input {
    }
    .slider::-webkit-slider-thumb {
       -webkit-appearance: none;
-      border-radius: 50%;
+      border-radius: 20%;
       appearance: none;
       width: 45px;
       height: 45px;
-      background: rgb(161, 5, 18);
-      border: 6px solid rgb(0, 105, 44);
+      background: rgb(55, 3, 243);
+      border: 3px solid rgb(1, 10, 32);
       cursor: pointer;
    }
    .slider::-moz-range-thumb {

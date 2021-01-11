@@ -12,21 +12,28 @@
 </head>
 
 <body>
-    <h1 id="temperature-text">no data </h1>
+    <h1>RC telemetry by ESP</h1>
+    <p>
+    <h1 id="height-text">no data </h1>
     <h1 id="altitude-text">no data </h1>
+    <h1 id="temperature-text">no data </h1>
+    </p>
     <p>
 
         <button onclick="start()">start</button>
-        <button onclick="altreset()">Höhe Reset</button>
-        <button onclick="loadVoices()">lade Stimmen</button>
+        <button onclick="altreset()">alt reset</button>
+
     </p>
     <p>
-    <h2>Dauer bis Update in Sekunden</h2>
-    <div class="slidecontainer">
-        <input type="range" min="1" max="30" value="10" class="slider" />
-    </div>
-    <h2 class="sliderVal">T</h2>
+        <span>Updatedauer </span>
+        <span id="sliderVal">T</span>
+        <span> s</span>
     </p>
+    <div class="slidecontainer">
+        <input type="range" min="1" max="60" value="10" class="slider" />
+    </div>
+
+    <button onclick="loadVoices()">load voices</button>
 
 
 
