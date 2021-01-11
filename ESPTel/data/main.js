@@ -11,43 +11,7 @@ slider.oninput = function () {
     output.innerHTML = this.value;
     interval = parseInt(output.innerText);
 }
-class Voice {
-    constructor() {
-        this.configGUI = document.createElement("div")
-        const voices = window.speechSynthesis.getVoices();
-        const selector = document.createElement("select")
-        this.configGUI.appendChild(selector)
-        const uriToVoice = new Map();
-        for (let voice of voices) {
-            const newOption = document.createElement("option");
-            newOption.innerText = voice.lang + " (Name: " + voice.name + "," + voice.localService + ")";
-            newOption.value = voice.voiceURI;
-            uriToVoice.set(voice.voiceURI, voice)
-            selector.appendChild(newOption);
-        }
-        selector.onchange = (event) => {
-            this.voice = uriToVoice.get(selector.value);
-        }
-        selector.onchange();
-    }
-    /**
-     * 
-     * @param {string} text text to speak
-     */
-    speak(text) {
-        var msg = new SpeechSynthesisUtterance();
-        msg.text = text
-        msg.voice = this.voice
-        window.speechSynthesis.speak(msg);
-    }
-}
 
-/**@type {Voice} */
-let voice = null
-function loadVoices() {
-    voice = new Voice()
-    document.body.appendChild(voice.configGUI);
-}
 
 async function getData() {
     response = await fetch("/data")
@@ -63,10 +27,8 @@ function saydata() {
     const height = alt - altBias;
     const text2 = "Höhe: " + height + " m";
     document.getElementById("altitude-text").innerHTML = text2;
+    window.speechSynthesis.speak(text + "  " + text2);
 
-    if (voice != null) {
-        voice.speak(text + "  " + text2);
-    }
 }
 function altreset() {
     getData();

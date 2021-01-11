@@ -25,7 +25,7 @@ void setup()
 			delay(10);
 	}
 	SPIFFS.begin();
-	WiFi.softAP("ESP", "1154", 3);
+	WiFi.softAP("ESP");
 	dnsServer.start(53, "*", WiFi.softAPIP());
 	server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
 		request->send_P(200, "text/html", "This is a great content");
