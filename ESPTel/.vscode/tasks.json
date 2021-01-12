@@ -1,4 +1,4 @@
-{
+{ 
 	"version": "2.0.0",
 	"tasks": [
 		{
@@ -8,6 +8,15 @@
 				"$platformio"
 			],
 			"label": "PlatformIO: Upload Filesystem Image (nodemcuv2)"
+		},
+		{
+			"type": "PlatformIO",
+			"task": "Build (nodemcuv2)",
+			"problemMatcher": [
+				"$platformio"
+			],
+			"group": "build",
+			"label": "PlatformIO: Build (nodemcuv2)"
 		}
 	]
 }
