@@ -13,7 +13,16 @@ Adafruit_BMP280 bmp; // use I2C interface
 Adafruit_Sensor *bmp_temp = bmp.getTemperatureSensor();
 Adafruit_Sensor *bmp_pressure = bmp.getPressureSensor();
 MPU9250 IMU(Wire, 0x68);
-
+float ax = 0.0;
+float ay = 0.0;
+float az = 0.0;
+float gx = 0.0;
+float gy = 0.0;
+float gz = 0.0;
+float mx = 0.0;
+float my = 0.0;
+float mz = 0.0;
+int status;
 
 void setup()
 {
@@ -27,17 +36,54 @@ void setup()
 		while (1)
 			delay(10);
 	}
+
+	status = IMU.begin();
+	if (status < 0)
+	{
+		Serial.println("IMU initialization unsuccessful");
+		Serial.println("Check IMU wiring or try cycling power");
+		Serial.print("Status: ");
+		Serial.println(status);
+		while (1)
+		{
+		}
+	}
+	// setting the accelerometer full scale range to +/-8G
+	IMU.setAccelRange(MPU9250::ACCEL_RANGE_8G);
+	// setting the gyroscope full scale range to +/-500 deg/s
+	IMU.setGyroRange(MPU9250::GYRO_RANGE_500DPS);
+	// setting DLPF bandwidth to 20 Hz
+	IMU.setDlpfBandwidth(MPU9250::DLPF_BANDWIDTH_20HZ);
+	// setting SRD to 19 for a 50 Hz update rate
+	IMU.setSrd(19);
+
 	SPIFFS.begin();
 	WiFi.softAP("ESP");
 	dnsServer.start(53, "*", WiFi.softAPIP());
 	server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
 		request->send_P(200, "text/html", "This is a great content");
 	});
+
 	server.on("/data", HTTP_GET, [](AsyncWebServerRequest *request) {
 		sensors_event_t temp_event, pressure_event;
 		bmp_temp->getEvent(&temp_event);
 		bmp_pressure->getEvent(&pressure_event);
-		String JSON = "{\"temperature\":" + String(temp_event.temperature) + ", \"pressure\":" + String(pressure_event.pressure) + "}";
+		// read the sensor
+		IMU.readSensor();
+
+		ax = IMU.getAccelX_mss() - 0.06;
+		ay = IMU.getAccelY_mss() - 0.05;
+		az = IMU.getAccelZ_mss() + 0.435;
+
+		gx = IMU.getGyroX_rads();
+		gy = IMU.getGyroY_rads();
+		gz = IMU.getGyroZ_rads();
+
+		mx = IMU.getMagX_uT();
+		my = IMU.getMagY_uT();
+		mz = IMU.getMagZ_uT();
+
+		String JSON = "{\"temperature\":" + String(temp_event.temperature) + ", \"pressure\":" + String(pressure_event.pressure) + ", \"ax\":" + String(ax) + ", \"ay\":" + String(ay) + ", \"az\":" + String(az) + ", \"gx\":" + String(gx) + ", \"gy\":" + String(gy) + ", \"gz\":" + String(gz) + ", \"mx\":" + String(mx) + ", \"my\":" + String(my) + ", \"mz\":" + String(mz) + "}";
 		request->send_P(200, "application/json", &JSON[0]);
 	});
 	server.on("/home.html", HTTP_GET, [](AsyncWebServerRequest *request) {
@@ -46,9 +92,7 @@ void setup()
 	server.on("/main.js", HTTP_GET, [](AsyncWebServerRequest *request) {
 		request->send(SPIFFS, "/main.js", "text/javascript");
 	});
-	server.on("/tts.js", HTTP_GET, [](AsyncWebServerRequest *request) {
-		request->send(SPIFFS, "/tts.js", "text/javascript");
-	});
+
 	server.on("/main.css", HTTP_GET, [](AsyncWebServerRequest *request) {
 		request->send(SPIFFS, "/main.css", "text/css");
 	});
