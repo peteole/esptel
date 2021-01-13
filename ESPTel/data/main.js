@@ -54,7 +54,7 @@ async function getData() {
     data = await response.json()
 }
 
-function saydata() {
+function displayData() {
     getData();
     const text = "Temperatur: " + data.temperature + " °C";
     document.getElementById("temperature-text").innerHTML = text;
@@ -66,16 +66,21 @@ function saydata() {
     const text3 = "altitude: " + alt + " m";
     document.getElementById("altitude-text").innerHTML = text3;
 
+}
+
+function altreset() {
+    getData();
+    altBias = alt;
+}
+function saydata() {
+    let text = document.getElementById("temperature-text").value;
+    let text2 = document.getElementById("height-text").value;
+
 
     if (voice != null) {
         voice.speak(text + "  " + text2);
     }
 }
-function altreset() {
-    getData();
-    altBias = alt;
-}
-
 
 function start() {
     saydata();
