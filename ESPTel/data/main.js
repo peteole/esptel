@@ -1,4 +1,4 @@
-var interval;
+var interval=10;
 var response;
 var data;
 var alt;
@@ -65,6 +65,12 @@ function displayData() {
     document.getElementById("height-text").innerHTML = text2;
     const text3 = "altitude: " + alt + " m";
     document.getElementById("altitude-text").innerHTML = text3;
+    const text4 = "accX: " + data.ax + " accY:" + data.ay + " accZ:" + data.az;
+    document.getElementById("acc-text").innerHTML = text4;
+    const text5 = "gyrX: " + data.gx + " gyrY:" + data.gy + " gyrZ:" + data.gz;
+    document.getElementById("gyr-text").innerHTML = text5;
+    const text6 = "magX: " + data.mx + " magY:" + data.my + " magZ:" + data.mz;
+    document.getElementById("mag-text").innerHTML = text6;
 
 }
 
@@ -72,20 +78,23 @@ function altreset() {
     getData();
     altBias = alt;
 }
-function saydata() {
-    let text = document.getElementById("temperature-text").value;
-    let text2 = document.getElementById("height-text").value;
+function sayData() {
+    let text = document.getElementById("temperature-text").innerText;
+    let text2 = document.getElementById("height-text").innerText;
 
 
     if (voice != null) {
         voice.speak(text + "  " + text2);
     }
 }
+function displayLoop(){
+    setInterval(displayData,100)
+}
 
-function start() {
-    saydata();
-    setTimeout(start, interval * 1000)
-
+function speechLoop() {
+    sayData();
+    //setTimeout(start, interval * 1000)
+setInterval(sayData,interval*1000)
 }
 
 
