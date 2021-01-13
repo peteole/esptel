@@ -71,7 +71,7 @@ function saydata() {
         voice.speak(text + "  " + text2);
     }
 }
-async function altreset() {
+function altreset() {
     getData();
     altBias = alt;
 }
