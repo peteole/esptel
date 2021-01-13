@@ -14,9 +14,9 @@
 <body>
     <h1>RC telemetry by ESP</h1>
     <p>
-    <h1 id="height-text">no data </h1>
-    <h1 id="altitude-text">no data </h1>
-    <h1 id="temperature-text">no data </h1>
+    <h2 id="height-text">no data </h2>
+    <h2 id="altitude-text">no data </h2>
+    <h2 id="temperature-text">no data </h2>
     </p>
     <p>
     <h3 id="acc-text">no data</h3>
@@ -26,26 +26,20 @@
     <p>
 
         <button onclick="displayData()">display data</button>
-        <button onclick="displayLoop()">continous display</button>
-        <button onclick="altreset()">alt reset</button>
+        <button onclick="displayLoop()">cont. display</button>
+        <button onclick="altreset()">height reset</button>
 
     </p>
     <p>
         <button onclick="sayData()">say data</button>
-        <button onclick="speechLoop()">continous speech</button>
+        <button onclick="speechLoop()">start speech</button>
+        <button onclick="stopSpeechLoop()">stop speech</button>
     </p>
     <p>
-        <span>Updatedauer </span>
-        <span id="sliderVal">T</span>
-        <span> s</span>
+
+        <button onclick="loadVoices()">load voices</button>
+
     </p>
-    <div class="slidecontainer">
-        <input type="range" min="1" max="60" value="10" class="slider" />
-    </div>
-
-    <button onclick="loadVoices()">load voices</button>
-
-
 
 </body>
 

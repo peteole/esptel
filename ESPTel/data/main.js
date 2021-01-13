@@ -1,17 +1,11 @@
-var interval=10;
+var myVar;
+var interval = 10;
 var response;
 var data;
 var alt;
 var altBias = 0;
 
-const slider = document.querySelector(".slider");
-const output = document.getElementById("sliderVal");
-output.innerHTML = slider.value;
 
-slider.oninput = function () {
-    output.innerHTML = this.value;
-    interval = parseInt(output.innerText);
-}
 class Voice {
     constructor() {
         this.configGUI = document.createElement("div")
@@ -75,27 +69,31 @@ function displayData() {
 }
 
 function altreset() {
-    getData();
+
     altBias = alt;
 }
 function sayData() {
-    let text = document.getElementById("temperature-text").innerText;
-    let text2 = document.getElementById("height-text").innerText;
+    //let text = document.getElementById("temperature-text").innerText;
+    let read = document.getElementById("height-text").innerText;
 
 
     if (voice != null) {
-        voice.speak(text + "  " + text2);
+        voice.speak(read);
     }
 }
-function displayLoop(){
-    setInterval(displayData,100)
+function displayLoop() {
+    setInterval(displayData, 100)
 }
 
 function speechLoop() {
-    sayData();
-    //setTimeout(start, interval * 1000)
-setInterval(sayData,interval*1000)
+    myVar = setInterval(sayData, interval * 1000)
 }
+
+function stopSpeechLoop() {
+    clearInterval(myVar);
+}
+
+
 
 
 
