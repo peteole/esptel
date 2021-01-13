@@ -4,6 +4,7 @@
 #include <ESPAsyncWebServer.h>
 #include <FS.h>
 #include <Adafruit_BMP280.h>
+#include "MPU9250.h"
 #include <Wire.h>
 DNSServer dnsServer;
 AsyncWebServer server(80);
@@ -11,6 +12,8 @@ AsyncWebServer server(80);
 Adafruit_BMP280 bmp; // use I2C interface
 Adafruit_Sensor *bmp_temp = bmp.getTemperatureSensor();
 Adafruit_Sensor *bmp_pressure = bmp.getPressureSensor();
+MPU9250 IMU(Wire, 0x68);
+
 
 void setup()
 {
