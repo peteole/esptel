@@ -89,8 +89,14 @@ void setup()
 	server.on("/home.html", HTTP_GET, [](AsyncWebServerRequest *request) {
 		request->send(SPIFFS, "/home.html", "text/html");
 	});
+	server.on("/horizon.html", HTTP_GET, [](AsyncWebServerRequest *request) {
+		request->send(SPIFFS, "/horizon.html", "text/html");
+	});
 	server.on("/main.js", HTTP_GET, [](AsyncWebServerRequest *request) {
 		request->send(SPIFFS, "/main.js", "text/javascript");
+	});
+	server.on("/horizon.js", HTTP_GET, [](AsyncWebServerRequest *request) {
+		request->send(SPIFFS, "/horizon.js", "text/javascript");
 	});
 
 	server.on("/main.css", HTTP_GET, [](AsyncWebServerRequest *request) {
