@@ -26,8 +26,8 @@ float pitch = 0.0;
 float bank = 0.0;
 float pitchg = 0;
 float bankg = 0;
-float dt;
-float lastTime = 0;
+unsigned long dt;
+unsigned long lastTime = 0;
 int status;
 
 void setup()

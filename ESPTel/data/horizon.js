@@ -60,7 +60,7 @@ function drawHor(pitch, bank) {
     ctx.rotate(bank * Math.PI / 180);
     ctx.translate(-width / 2, -height / 2);
 }
-function drawScale() {
+function drawScale(alt) {
 
     ctx.beginPath();
     ctx.arc(width / 2, height / 2, height / 2.2, 0, 2 * Math.PI);
@@ -94,7 +94,15 @@ function drawScale() {
     ctx.lineTo(height / 4 + width / 2, height / 2);
     ctx.lineTo(height / 4 + width / 2, height / 2 + 5 * factor);
     ctx.stroke();
-
+    /**alt band */
+    for (let i = alt - 30; i <= alt + 30; i++) {
+        ctx.strokeStyle = "white";
+        if (i % 5 == 0) {
+            ctx.strokeText(i.toString(), width * 0.9, height / 2 - (i - alt) * 2 * factor);
+        }
+    }
+    ctx.clearRect(width * 0.85, height / 2 - 25, width * 0.15, 50);
+    ctx.strokeText(alt, width * 0.9, height / 2 + 12);
 
 }
 function drawArtHor() {
@@ -102,6 +110,7 @@ function drawArtHor() {
     getData();
     pitch = parseInt(data.pitchg);
     bank = parseInt(data.bankg);
+    alt = parseInt(44330 * (1.0 - Math.pow(data.pressure / 1013.25, 0.1903)));
     const text = "pitch: " + pitch;
     document.getElementById("pitch-text").innerHTML = text;
     const text2 = "bank: " + bank;
@@ -113,7 +122,7 @@ function drawArtHor() {
     ctx.font = "30px Arial";
 
     drawHor(pitch, bank);
-    drawScale();
+    drawScale(alt);
 }
 
 
