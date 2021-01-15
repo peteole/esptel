@@ -21,6 +21,10 @@ p,
 label {
     font: 1rem 'Fira Sans', sans-serif;
 }
+a{
+   color: rgb(12, 68, 26);
+   font-size: 26px;
+}
 span {
     font-size:160%;
 }
