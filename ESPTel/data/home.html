@@ -1,14 +1,47 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Example page</title>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
-    <script src='main.js'></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>ESP Hotspot</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css">
+    <script defer src="main.js"></script>
+
 </head>
+
 <body>
-    <h1>This is even greater content</h1>
+    <h1>RC telemetry by ESP</h1>
+    <p>
+    <h2 id="height-text">no data </h2>
+    <h2 id="altitude-text">no data </h2>
+    <h2 id="temperature-text">no data </h2>
+    </p>
+    <p>
+    <h3 id="acc-text">no data</h3>
+    <h3 id="gyr-text">no data</h3>
+    <h3 id="mag-text">no data</h3>
+    </p>
+    <p>
+
+        <button onclick="displayData()">display data</button>
+        <button onclick="displayLoop()">cont. display</button>
+        <button onclick="altreset()">height reset</button>
+
+    </p>
+    <p>
+        <button onclick="sayData()">say data</button>
+        <button onclick="speechLoop()">start speech</button>
+        <button onclick="stopSpeechLoop()">stop speech</button>
+    </p>
+    <p>
+
+        <button onclick="loadVoices()">load voices</button>
+       <a href="\horizon.html">Horizon</a>
+
+    </p>
+
 </body>
+
 </html>
