@@ -24,6 +24,10 @@ float my = 0.0;
 float mz = 0.0;
 float pitch = 0.0;
 float bank = 0.0;
+float pitchg = 0;
+float bankg = 0;
+float dt;
+float lastTime = 0;
 int status;
 
 void setup()
@@ -85,10 +89,19 @@ void setup()
 		my = IMU.getMagY_uT();
 		mz = IMU.getMagZ_uT();
 
-		pitch = 180 * atan(ax / az) /PI;
+		pitch = 180 * atan(ax / az) / PI;
 		bank = 180 * atan(ay / az) / PI;
-
-		String JSON = "{\"temperature\":" + String(temp_event.temperature) + ", \"pressure\":" + String(pressure_event.pressure) + ", \"ax\":" + String(ax) + ", \"ay\":" + String(ay) + ", \"az\":" + String(az) + ", \"gx\":" + String(gx) + ", \"gy\":" + String(gy) + ", \"gz\":" + String(gz) + ", \"mx\":" + String(mx) + ", \"my\":" + String(my) + ", \"mz\":" + String(mz) + ", \"pitch\":" + String(pitch) + ", \"bank\":" + String(bank) + "}";
+		dt = millis() - lastTime;
+		lastTime = millis();
+		pitchg = pitchg - gy * dt / 1000 * 180 / PI;
+		bankg = bankg + gx * dt / 1000 * 180 / PI;
+		//Kreiselstabiliert bei Gesamtbeschleunigung>1g
+		if (sqrt(ax * ax + ay * ay + az * az) < 10)
+		{
+			pitchg = pitch;
+			bankg = bank;
+		}
+		String JSON = "{\"temperature\":" + String(temp_event.temperature) + ", \"pressure\":" + String(pressure_event.pressure) + ", \"ax\":" + String(ax) + ", \"ay\":" + String(ay) + ", \"az\":" + String(az) + ", \"gx\":" + String(gx) + ", \"gy\":" + String(gy) + ", \"gz\":" + String(gz) + ", \"mx\":" + String(mx) + ", \"my\":" + String(my) + ", \"mz\":" + String(mz) + ", \"pitch\":" + String(pitch) + ", \"bank\":" + String(bank) + ", \"pitchg\":" + String(pitchg) + ", \"bankg\":" + String(bankg) + "}";
 		request->send_P(200, "application/json", &JSON[0]);
 	});
 	server.on("/home.html", HTTP_GET, [](AsyncWebServerRequest *request) {
