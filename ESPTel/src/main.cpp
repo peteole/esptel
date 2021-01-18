@@ -107,23 +107,9 @@ void setup()
 		angz = -gx * dt / 1000;
 
 		//Kreiselstabiliert bei Gesamtbeschleunigung>1g
-		if (acc > 10 || acc < 9.6)
+		if (acc > 10 || acc < 9.7)
 		{
-			/*
-			axg = axg + axg * cos(angy) + azg * sin(angy) + axg * cos(angz) - ayg * sin(angz);
-			ayg = ayg * cos(angx) - azg * sin(angx) + ayg + axg * sin(angz) + ayg * cos(angz);
-			azg = ayg * sin(angx) + azg * cos(angx) - axg * sin(angy) + azg * cos(angy) + azg;
-		*/
-			/*
-			axg1 = axg * (cos(angx) * cos(angz) - sin(angx) * cos(angy) * sin(angz)) - ayg * (cos(angx) * sin(angz) + sin(angx) * cos(angy) * cos(angz)) + azg * (sin(angx) * sin(angy));
-			ayg1 = axg * (sin(angx) * cos(angz) + cos(angx) * cos(angy) * sin(angz)) - ayg * (sin(angx) * sin(angz) - cos(angx) * cos(angy) * cos(angz)) - azg * (cos(angx) * sin(angy));
-			azg1 = axg * sin(angy) * sin(angz) + ayg * sin(angy) * cos(angz) + azg * cos(angy);
-*/
-			/*
-			axg1 = axg * (cos(angy) * cos(angz) - sin(angy) * cos(angx) * sin(angz)) - ayg * (cos(angy) * sin(angz) + sin(angy) * cos(angx) * cos(angz)) + azg * (sin(angy) * sin(angx));
-			ayg1 = axg * (sin(angy) * cos(angz) + cos(angy) * cos(angx) * sin(angz)) - ayg * (sin(angy) * sin(angz) - cos(angy) * cos(angx) * cos(angz)) - azg * (cos(angy) * sin(angx));
-			azg1 = axg * sin(angx) * sin(angz) + ayg * sin(angx) * cos(angz) + azg * cos(angx);
-			*/
+
 			axg1 = axg * (cos(angy) * cos(angx)) + ayg * (sin(angz) * sin(angy) * cos(angx) - cos(angz) * sin(angx)) + azg * (cos(angz) * sin(angy) * cos(angx) + sin(angz) * sin(angx));
 			ayg1 = axg * (cos(angy) * sin(angx)) + ayg * (sin(angz) * sin(angy) * sin(angx) + cos(angz) * cos(angx)) + azg * (cos(angz) * sin(angy) * sin(angx) - sin(angz) * cos(angz));
 			azg1 = axg * (-sin(angy)) + ayg * (sin(angz) * cos(angy)) + azg * (cos(angz) * cos(angy));
@@ -139,6 +125,13 @@ void setup()
 		}
 		pitch = 180 * atan(axg / azg) / PI;
 		bank = 180 * atan(ayg / azg) / PI;
+		if (azg < 0)
+		{
+			//pitch = pitch - 180;
+			bank = bank + 180;
+		}
+		
+
 		String JSON = "{\"temperature\":" + String(temp_event.temperature) + ", \"pressure\":" + String(pressure_event.pressure) + ", \"ax\":" + String(ax) + ", \"ay\":" + String(ay) + ", \"az\":" + String(az) + ", \"acc\":" + String(acc) + ", \"gx\":" + String(gx) + ", \"gy\":" + String(gy) + ", \"gz\":" + String(gz) + ", \"mx\":" + String(mx) + ", \"my\":" + String(my) + ", \"mz\":" + String(mz) + ", \"pitch\":" + String(pitch) + ", \"bank\":" + String(bank) + ", \"pitchg\":" + String(pitchg) + ", \"bankg\":" + String(bankg) + ", \"angx\":" + String(angx) + ", \"dt\":" + String(dt) + "}";
 		request->send_P(200, "application/json", &JSON[0]);
 	});
