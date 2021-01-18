@@ -1,6 +1,7 @@
 
 var pitch = 0;
 var bank = 0;
+var acc;
 var ctx;
 var factor = 5;
 var c;
@@ -95,26 +96,31 @@ function drawScale(alt) {
     ctx.lineTo(height / 4 + width / 2, height / 2 + 5 * factor);
     ctx.stroke();
     /**alt band */
-    for (let i = alt - 30; i <= alt + 30; i++) {
+    for (let i = (alt - altBias - 15); i <= (alt - altBias + 15); i++) {
         ctx.strokeStyle = "white";
-        if (i % 5 == 0) {
-            ctx.strokeText(i.toString(), width * 0.9, height / 2 - (i - alt) * 2 * factor);
+        if (i % 10 == 0) {
+            ctx.strokeText(i, width * 0.87, height / 2 + 12 - (i - alt + altBias) * 4 * factor);
+        }
+        else if (i % 5 == 0) {
+            ctx.beginPath();
+            ctx.moveTo(width * 0.87, height / 2 - (i - alt + altBias) * 4 * factor);
+            ctx.lineTo(width * 0.95, height / 2 - (i - alt + altBias) * 4 * factor);
+            ctx.stroke();
         }
     }
     ctx.clearRect(width * 0.85, height / 2 - 25, width * 0.15, 50);
-    ctx.strokeText(alt, width * 0.9, height / 2 + 12);
+    ctx.strokeText(alt - altBias, width * 0.87, height / 2 + 12);
 
 }
 function drawArtHor() {
 
     getData();
-    pitch = parseInt(data.pitchg);
-    bank = parseInt(data.bankg);
+    pitch = parseInt(data.pitch);
+    bank = parseInt(data.bank);
     alt = parseInt(44330 * (1.0 - Math.pow(data.pressure / 1013.25, 0.1903)));
-    const text = "pitch: " + pitch;
-    document.getElementById("pitch-text").innerHTML = text;
-    const text2 = "bank: " + bank;
-    document.getElementById("bank-text").innerHTML = text2;
+    acc = data.acc
+    const text = "acc: " + acc + " m/s^2";
+    document.getElementById("acc-text").innerHTML = text;
 
     c = document.getElementById("myCanvas");
     ctx = c.getContext("2d");

@@ -13,20 +13,30 @@ Adafruit_BMP280 bmp; // use I2C interface
 Adafruit_Sensor *bmp_temp = bmp.getTemperatureSensor();
 Adafruit_Sensor *bmp_pressure = bmp.getPressureSensor();
 MPU9250 IMU(Wire, 0x68);
-float ax = 0.0;
-float ay = 0.0;
-float az = 0.0;
-float gx = 0.0;
+float ax = 0.01; //measured acc
+float ay = 0.01;
+float az = 10.0;
+float axg = 0.01; //Gyro corrected acc
+float ayg = 0.01;
+float azg = 10;
+float axg1;
+float ayg1;
+float azg1;
+float acc;		//Accelaration Betrag
+float gx = 0.0; //gyro rate
 float gy = 0.0;
 float gz = 0.0;
-float mx = 0.0;
+double angx; //angle of rotation since last measurement
+double angy;
+double angz;
+float mx = 0.0; //mag flux
 float my = 0.0;
 float mz = 0.0;
 float pitch = 0.0;
 float bank = 0.0;
 float pitchg = 0;
 float bankg = 0;
-unsigned long dt;
+float dt = 0.1;
 unsigned long lastTime = 0;
 int status;
 
@@ -88,20 +98,48 @@ void setup()
 		mx = IMU.getMagX_uT();
 		my = IMU.getMagY_uT();
 		mz = IMU.getMagZ_uT();
-
-		pitch = 180 * atan(ax / az) / PI;
-		bank = 180 * atan(ay / az) / PI;
-		dt = millis() - lastTime;
+		//dt = 0.1;
+		dt = (millis() - lastTime); //Milliseconds since last measurement
 		lastTime = millis();
-		pitchg = pitchg - gy * dt / 1000 * 180 / PI;
-		bankg = bankg + gx * dt / 1000 * 180 / PI;
+		acc = sqrt(ax * ax + ay * ay + az * az);
+		angx = -gz * dt / 1000;
+		angy = -gy * dt / 1000;
+		angz = -gx * dt / 1000;
+
 		//Kreiselstabiliert bei Gesamtbeschleunigung>1g
-		if (sqrt(ax * ax + ay * ay + az * az) < 10)
+		if (acc > 10 || acc < 9.6)
 		{
-			pitchg = pitch;
-			bankg = bank;
+			/*
+			axg = axg + axg * cos(angy) + azg * sin(angy) + axg * cos(angz) - ayg * sin(angz);
+			ayg = ayg * cos(angx) - azg * sin(angx) + ayg + axg * sin(angz) + ayg * cos(angz);
+			azg = ayg * sin(angx) + azg * cos(angx) - axg * sin(angy) + azg * cos(angy) + azg;
+		*/
+			/*
+			axg1 = axg * (cos(angx) * cos(angz) - sin(angx) * cos(angy) * sin(angz)) - ayg * (cos(angx) * sin(angz) + sin(angx) * cos(angy) * cos(angz)) + azg * (sin(angx) * sin(angy));
+			ayg1 = axg * (sin(angx) * cos(angz) + cos(angx) * cos(angy) * sin(angz)) - ayg * (sin(angx) * sin(angz) - cos(angx) * cos(angy) * cos(angz)) - azg * (cos(angx) * sin(angy));
+			azg1 = axg * sin(angy) * sin(angz) + ayg * sin(angy) * cos(angz) + azg * cos(angy);
+*/
+			/*
+			axg1 = axg * (cos(angy) * cos(angz) - sin(angy) * cos(angx) * sin(angz)) - ayg * (cos(angy) * sin(angz) + sin(angy) * cos(angx) * cos(angz)) + azg * (sin(angy) * sin(angx));
+			ayg1 = axg * (sin(angy) * cos(angz) + cos(angy) * cos(angx) * sin(angz)) - ayg * (sin(angy) * sin(angz) - cos(angy) * cos(angx) * cos(angz)) - azg * (cos(angy) * sin(angx));
+			azg1 = axg * sin(angx) * sin(angz) + ayg * sin(angx) * cos(angz) + azg * cos(angx);
+			*/
+			axg1 = axg * (cos(angy) * cos(angx)) + ayg * (sin(angz) * sin(angy) * cos(angx) - cos(angz) * sin(angx)) + azg * (cos(angz) * sin(angy) * cos(angx) + sin(angz) * sin(angx));
+			ayg1 = axg * (cos(angy) * sin(angx)) + ayg * (sin(angz) * sin(angy) * sin(angx) + cos(angz) * cos(angx)) + azg * (cos(angz) * sin(angy) * sin(angx) - sin(angz) * cos(angz));
+			azg1 = axg * (-sin(angy)) + ayg * (sin(angz) * cos(angy)) + azg * (cos(angz) * cos(angy));
+			axg = axg1;
+			ayg = ayg1;
+			azg = azg1;
 		}
-		String JSON = "{\"temperature\":" + String(temp_event.temperature) + ", \"pressure\":" + String(pressure_event.pressure) + ", \"ax\":" + String(ax) + ", \"ay\":" + String(ay) + ", \"az\":" + String(az) + ", \"gx\":" + String(gx) + ", \"gy\":" + String(gy) + ", \"gz\":" + String(gz) + ", \"mx\":" + String(mx) + ", \"my\":" + String(my) + ", \"mz\":" + String(mz) + ", \"pitch\":" + String(pitch) + ", \"bank\":" + String(bank) + ", \"pitchg\":" + String(pitchg) + ", \"bankg\":" + String(bankg) + "}";
+		else
+		{
+			axg = ax;
+			ayg = ay;
+			azg = az;
+		}
+		pitch = 180 * atan(axg / azg) / PI;
+		bank = 180 * atan(ayg / azg) / PI;
+		String JSON = "{\"temperature\":" + String(temp_event.temperature) + ", \"pressure\":" + String(pressure_event.pressure) + ", \"ax\":" + String(ax) + ", \"ay\":" + String(ay) + ", \"az\":" + String(az) + ", \"acc\":" + String(acc) + ", \"gx\":" + String(gx) + ", \"gy\":" + String(gy) + ", \"gz\":" + String(gz) + ", \"mx\":" + String(mx) + ", \"my\":" + String(my) + ", \"mz\":" + String(mz) + ", \"pitch\":" + String(pitch) + ", \"bank\":" + String(bank) + ", \"pitchg\":" + String(pitchg) + ", \"bankg\":" + String(bankg) + ", \"angx\":" + String(angx) + ", \"dt\":" + String(dt) + "}";
 		request->send_P(200, "application/json", &JSON[0]);
 	});
 	server.on("/home.html", HTTP_GET, [](AsyncWebServerRequest *request) {

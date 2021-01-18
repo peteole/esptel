@@ -59,12 +59,16 @@ function displayData() {
     document.getElementById("height-text").innerHTML = text2;
     const text3 = "altitude: " + alt + " m";
     document.getElementById("altitude-text").innerHTML = text3;
-    const text4 = "accX: " + data.ax + " accY:" + data.ay + " accZ:" + data.az;
+    const text4 = "acX: " + data.ax + " acY:" + data.ay + " acZ:" + data.az + " acc:" + data.acc;
     document.getElementById("acc-text").innerHTML = text4;
     const text5 = "gyrX: " + data.gx + " gyrY:" + data.gy + " gyrZ:" + data.gz;
     document.getElementById("gyr-text").innerHTML = text5;
     const text6 = "magX: " + data.mx + " magY:" + data.my + " magZ:" + data.mz;
     document.getElementById("mag-text").innerHTML = text6;
+    const text7 = "angX: " + data.angx;
+    document.getElementById("angx-text").innerHTML = text7;
+    const text8 = "dt: " + data.dt;
+    document.getElementById("dt-text").innerHTML = text8;
 
 }
 
