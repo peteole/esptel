@@ -121,15 +121,21 @@ void setup()
 			ayg = ay;
 			azg = az;
 		}
-
+		pitch = 180 * atan(axg / azg) / PI;
 		if (azg > 1 || azg < -1)
 		{
-			bank = 180 * atan(ayg / azg) / PI;
-			pitch = 180 * atan(axg / azg) / PI;
+			if (azg > 0)
+			{
+				bank = 180 * atan(ayg / azg) / PI;
+			}
+			else
+			{
+				bank = 180 + 180 * atan(ayg / azg) / PI;
+			}
 		}
 		else
 		{
-			
+
 			if (ayg > 0)
 			{
 				bank = 90 - 180 * atan(azg / ayg) / PI;
