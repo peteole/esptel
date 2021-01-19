@@ -108,8 +108,11 @@ function drawScale(alt) {
             ctx.stroke();
         }
     }
-    ctx.clearRect(width * 0.85, height / 2 - 25, width * 0.15, 50);
+    ctx.clearRect(width * 0.85, height / 2 - 25, width * 0.15, 50); //Alt on PFD
     ctx.strokeText(alt - altBias, width * 0.87, height / 2 + 12);
+    ctx.clearRect(width * 0.5 - 30, height -25, 60, 25); //HDG on PFD
+    ctx.strokeText(mhdg, width * 0.5 - 25, height);
+
 
 }
 function drawArtHor() {
@@ -117,6 +120,7 @@ function drawArtHor() {
     getData();
     pitch = parseInt(data.pitch);
     bank = parseInt(data.bank);
+    mhdg = parseInt(data.mhdg);
     alt = parseInt(44330 * (1.0 - Math.pow(data.pressure / 1013.25, 0.1903)));
     acc = data.acc
     const text = "acc: " + acc + " m/s^2";
