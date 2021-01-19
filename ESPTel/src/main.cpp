@@ -34,8 +34,6 @@ float my = 0.0;
 float mz = 0.0;
 float pitch = 0.0;
 float bank = 0.0;
-float pitchg = 0;
-float bankg = 0;
 float dt = 0.1;
 unsigned long lastTime = 0;
 int status;
@@ -124,13 +122,21 @@ void setup()
 			azg = az;
 		}
 		pitch = 180 * atan(axg / azg) / PI;
-		bank = 180 * atan(ayg / azg) / PI;
-		if (azg < 0)
+		if (azg > 1 || azg < -1)
 		{
-			//pitch = pitch - 180;
-			bank = bank + 180;
+			bank = 180 * atan(ayg / azg) / PI;
 		}
-		
+		else
+		{
+			if (ayg > 0)
+			{
+				bank = 90 - 180 * atan(azg / ayg) / PI;
+			}
+			else
+			{
+				bank = -90 - 180 * atan(azg / ayg) / PI;
+			}
+		}
 
 		String JSON = "{\"temperature\":" + String(temp_event.temperature) + ", \"pressure\":" + String(pressure_event.pressure) + ", \"ax\":" + String(ax) + ", \"ay\":" + String(ay) + ", \"az\":" + String(az) + ", \"acc\":" + String(acc) + ", \"gx\":" + String(gx) + ", \"gy\":" + String(gy) + ", \"gz\":" + String(gz) + ", \"mx\":" + String(mx) + ", \"my\":" + String(my) + ", \"mz\":" + String(mz) + ", \"pitch\":" + String(pitch) + ", \"bank\":" + String(bank) + ", \"pitchg\":" + String(pitchg) + ", \"bankg\":" + String(bankg) + ", \"angx\":" + String(angx) + ", \"dt\":" + String(dt) + "}";
 		request->send_P(200, "application/json", &JSON[0]);
