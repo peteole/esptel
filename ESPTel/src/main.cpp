@@ -121,13 +121,15 @@ void setup()
 			ayg = ay;
 			azg = az;
 		}
-		pitch = 180 * atan(axg / azg) / PI;
+
 		if (azg > 1 || azg < -1)
 		{
 			bank = 180 * atan(ayg / azg) / PI;
+			pitch = 180 * atan(axg / azg) / PI;
 		}
 		else
 		{
+			
 			if (ayg > 0)
 			{
 				bank = 90 - 180 * atan(azg / ayg) / PI;
@@ -138,7 +140,7 @@ void setup()
 			}
 		}
 
-		String JSON = "{\"temperature\":" + String(temp_event.temperature) + ", \"pressure\":" + String(pressure_event.pressure) + ", \"ax\":" + String(ax) + ", \"ay\":" + String(ay) + ", \"az\":" + String(az) + ", \"acc\":" + String(acc) + ", \"gx\":" + String(gx) + ", \"gy\":" + String(gy) + ", \"gz\":" + String(gz) + ", \"mx\":" + String(mx) + ", \"my\":" + String(my) + ", \"mz\":" + String(mz) + ", \"pitch\":" + String(pitch) + ", \"bank\":" + String(bank) + ", \"pitchg\":" + String(pitchg) + ", \"bankg\":" + String(bankg) + ", \"angx\":" + String(angx) + ", \"dt\":" + String(dt) + "}";
+		String JSON = "{\"temperature\":" + String(temp_event.temperature) + ", \"pressure\":" + String(pressure_event.pressure) + ", \"ax\":" + String(ax) + ", \"ay\":" + String(ay) + ", \"az\":" + String(az) + ", \"acc\":" + String(acc) + ", \"gx\":" + String(gx) + ", \"gy\":" + String(gy) + ", \"gz\":" + String(gz) + ", \"mx\":" + String(mx) + ", \"my\":" + String(my) + ", \"mz\":" + String(mz) + ", \"pitch\":" + String(pitch) + ", \"bank\":" + String(bank) + ", \"angx\":" + String(angx) + ", \"dt\":" + String(dt) + "}";
 		request->send_P(200, "application/json", &JSON[0]);
 	});
 	server.on("/home.html", HTTP_GET, [](AsyncWebServerRequest *request) {
