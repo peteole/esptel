@@ -13,15 +13,15 @@ Adafruit_BMP280 bmp; // use I2C interface
 Adafruit_Sensor *bmp_temp = bmp.getTemperatureSensor();
 Adafruit_Sensor *bmp_pressure = bmp.getPressureSensor();
 MPU9250 IMU(Wire, 0x68);
-float ax = 0.01; //measured acc
-float ay = 0.01;
-float az = 10.0;
-float axg = 0.01; //Gyro corrected acc
-float ayg = 0.01;
-float azg = 10;
-float axg1;
-float ayg1;
-float azg1;
+double ax = 0.01; //measured acc
+double ay = 0.01;
+double az = 10.0;
+double axg = 0.01; //Gyro corrected acc
+double ayg = 0.01;
+double azg = 10;
+double axg1;
+double ayg1;
+double azg1;
 float acc;		//Accelaration Betrag
 float gx = 0.0; //gyro rate
 float gy = 0.0;
@@ -122,6 +122,9 @@ void setup()
 			azg = az;
 		}
 		pitch = 180 * atan(axg / azg) / PI;
+		bank = 180 * atan2(ayg, azg) / PI;
+
+		/*pitch = 180 * atan(axg / azg) / PI;
 		if (azg > 1 || azg < -1)
 		{
 			if (azg > 0)
@@ -145,7 +148,7 @@ void setup()
 				bank = -90 - 180 * atan(azg / ayg) / PI;
 			}
 		}
-
+*/
 		String JSON = "{\"temperature\":" + String(temp_event.temperature) + ", \"pressure\":" + String(pressure_event.pressure) + ", \"ax\":" + String(ax) + ", \"ay\":" + String(ay) + ", \"az\":" + String(az) + ", \"acc\":" + String(acc) + ", \"gx\":" + String(gx) + ", \"gy\":" + String(gy) + ", \"gz\":" + String(gz) + ", \"mx\":" + String(mx) + ", \"my\":" + String(my) + ", \"mz\":" + String(mz) + ", \"pitch\":" + String(pitch) + ", \"bank\":" + String(bank) + ", \"angx\":" + String(angx) + ", \"dt\":" + String(dt) + "}";
 		request->send_P(200, "application/json", &JSON[0]);
 	});
