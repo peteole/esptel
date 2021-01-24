@@ -50,7 +50,7 @@ void setup()
 		mx = IMU.getMagX_uT();
 		my = IMU.getMagY_uT();
 		mz = IMU.getMagZ_uT();
-		mhdg = 180 * atan2(-my, -mx) / PI + 180;
+		mhdg = atan2(-my, -mx);
 
 		String JSON = "{\"temperature\":" + String(temp_event.temperature) + ", \"pressure\":" + String(pressure_event.pressure) + ", \"mhdg\":" + String(mhdg) + ", \"ax\":" + String(dmp.accel.x) + ", \"ay\":" + String(dmp.accel.y) + ", \"az\":" + String(dmp.accel.z) + ", \"pitch\":" + String(dmp.pitch) + ", \"bank\":" + String(dmp.bank) + "}";
 		request->send_P(200, "application/json", &JSON[0]);
