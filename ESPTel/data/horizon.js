@@ -1,6 +1,7 @@
 
 var pitch = 0;
 var bank = 0;
+var acc;
 var ctx;
 var factor = 5;
 var c;
@@ -60,7 +61,7 @@ function drawHor(pitch, bank) {
     ctx.rotate(bank * Math.PI / 180);
     ctx.translate(-width / 2, -height / 2);
 }
-function drawScale() {
+function drawScale(alt) {
 
     ctx.beginPath();
     ctx.arc(width / 2, height / 2, height / 2.2, 0, 2 * Math.PI);
@@ -94,6 +95,23 @@ function drawScale() {
     ctx.lineTo(height / 4 + width / 2, height / 2);
     ctx.lineTo(height / 4 + width / 2, height / 2 + 5 * factor);
     ctx.stroke();
+    /**alt band */
+    for (let i = (alt - altBias - 15); i <= (alt - altBias + 15); i++) {
+        ctx.strokeStyle = "white";
+        if (i % 10 == 0) {
+            ctx.strokeText(i, width * 0.87, height / 2 + 12 - (i - alt + altBias) * 4 * factor);
+        }
+        else if (i % 5 == 0) {
+            ctx.beginPath();
+            ctx.moveTo(width * 0.87, height / 2 - (i - alt + altBias) * 4 * factor);
+            ctx.lineTo(width * 0.95, height / 2 - (i - alt + altBias) * 4 * factor);
+            ctx.stroke();
+        }
+    }
+    ctx.clearRect(width * 0.85, height / 2 - 25, width * 0.15, 50); //Alt on PFD
+    ctx.strokeText(alt - altBias, width * 0.87, height / 2 + 12);
+    ctx.clearRect(width * 0.5 - 30, height -25, 60, 25); //HDG on PFD
+    ctx.strokeText(mhdg, width * 0.5 - 25, height);
 
 
 }
@@ -113,7 +131,7 @@ function drawArtHor() {
     ctx.font = "30px Arial";
 
     drawHor(pitch, bank);
-    drawScale();
+    drawScale(alt);
 }
 
 
