@@ -59,7 +59,7 @@ function displayData() {
     document.getElementById("height-text").innerHTML = text2;
     const text3 = "altitude: " + alt + " m";
     document.getElementById("altitude-text").innerHTML = text3;
-    const text4 = "accX: " + data.ax + " accY:" + data.ay + " accZ:" + data.az;
+    const text4 = "accX: " + data.ax.toFixed(2) + " accY:" + data.ay.toFixed(2) + " accZ:" + data.az.toFixed(2);
     document.getElementById("acc-text").innerHTML = text4;
     const text5 = "gyrX: " + data.gx + " gyrY:" + data.gy + " gyrZ:" + data.gz;
     document.getElementById("gyr-text").innerHTML = text5;
