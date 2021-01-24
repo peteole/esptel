@@ -1,4 +1,4 @@
-
+var mhdg;
 var pitch = 0;
 var bank = 0;
 var acc;
@@ -110,7 +110,7 @@ function drawScale(alt) {
     }
     ctx.clearRect(width * 0.85, height / 2 - 25, width * 0.15, 50); //Alt on PFD
     ctx.strokeText(alt - altBias, width * 0.87, height / 2 + 12);
-    ctx.clearRect(width * 0.5 - 30, height -25, 60, 25); //HDG on PFD
+    ctx.clearRect(width * 0.5 - 30, height - 25, 60, 25); //HDG on PFD
     ctx.strokeText(mhdg, width * 0.5 - 25, height);
 
 
@@ -118,14 +118,16 @@ function drawScale(alt) {
 function drawArtHor() {
 
     getData();
-    pitch = parseFloat(data.pitch)*180/Math.PI;
-    bank = parseFloat(data.bank)*180/Math.PI;
+    pitch = parseFloat(data.pitch) * 180 / Math.PI;
+    bank = parseFloat(data.bank) * 180 / Math.PI - 180;
     alt = parseInt(44330 * (1.0 - Math.pow(data.pressure / 1013.25, 0.1903)));
-    mhdg = parseInt(data.mhdg);
-    const text = "pitch: " + pitch;
-    document.getElementById("pitch-text").innerHTML = text;
-    const text2 = "bank: " + bank;
-    document.getElementById("bank-text").innerHTML = text2;
+    mhdg = parseInt((data.mhdg) * 180 / Math.PI);
+    ax = parseFloat(data.ax);
+    ay = parseFloat(data.ay);
+    az = parseFloat(data.az);
+    acc = (Math.sqrt(ax * ax + ay * ay + az * az));
+    const text = "ACC: " + acc.toFixed(2) + " m/s^2";
+    document.getElementById("acc-text").innerHTML = text;
 
     c = document.getElementById("myCanvas");
     ctx = c.getContext("2d");
