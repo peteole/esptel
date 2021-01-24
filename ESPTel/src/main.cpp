@@ -4,7 +4,7 @@
 #include <ESPAsyncWebServer.h>
 #include <FS.h>
 #include <Adafruit_BMP280.h>
-#include "MPU9259DMP.h"
+#include "MPU9250DMP.h"
 #include "dmp.h"
 #include <Wire.h>
 
