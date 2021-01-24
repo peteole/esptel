@@ -42,7 +42,8 @@ void setup()
 		bmp_temp->getEvent(&temp_event);
 		bmp_pressure->getEvent(&pressure_event);
 		dmp.updateReadables();
-		String JSON = "{\"temperature\":" + String(temp_event.temperature) + ", \"pressure\":" + String(pressure_event.pressure) + ", \"ax\":" + String(dmp.accel.x) + ", \"ay\":" + String(dmp.accel.y) + ", \"az\":" + String(dmp.accel.z) + ", \"pitch\":" + String(dmp.pitch) + ", \"bank\":" + String(dmp.bank) + "}";
+		
+		String JSON = "{\"temperature\":" + String(temp_event.temperature) + ", \"pressure\":" + String(pressure_event.pressure) + ", \"mhdg\":" + String(dmp.yaw) + ", \"ax\":" + String(dmp.accel.x) + ", \"ay\":" + String(dmp.accel.y) + ", \"az\":" + String(dmp.accel.z) + ", \"pitch\":" + String(dmp.pitch) + ", \"bank\":" + String(dmp.bank) + "}";
 		request->send_P(200, "application/json", &JSON[0]);
 	});
 	server.on("/home.html", HTTP_GET, [](AsyncWebServerRequest *request) {
