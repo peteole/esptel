@@ -100,8 +100,8 @@ function drawScale() {
 function drawArtHor() {
 
     getData();
-    pitch = parseInt(data.pitch);
-    bank = parseInt(data.bank);
+    pitch = parseFloat(data.pitch)*180/Math.PI;
+    bank = parseFloat(data.bank)*180/Math.PI;
     const text = "pitch: " + pitch;
     document.getElementById("pitch-text").innerHTML = text;
     const text2 = "bank: " + bank;
