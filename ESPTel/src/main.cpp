@@ -7,6 +7,7 @@
 #include "MPU9250DMP.h"
 #include "dmp.h"
 #include <Wire.h>
+ 
 
 DNSServer dnsServer;
 AsyncWebServer server(80);
@@ -45,9 +46,9 @@ void setup()
 		mx = IMU.getMagX_uT();
 		my = IMU.getMagY_uT();
 		mz = IMU.getMagZ_uT();
-		
+		mhdg = 180 * atan2(-my, -mx) / PI + 180;
 
-		String JSON = "{\"temperature\":" + String(temp_event.temperature) + ", \"pressure\":" + String(pressure_event.pressure) + ", \"mhdg\":" + String(dmp.yaw) + ", \"ax\":" + String(dmp.accel.x) + ", \"ay\":" + String(dmp.accel.y) + ", \"az\":" + String(dmp.accel.z) + ", \"pitch\":" + String(dmp.pitch) + ", \"bank\":" + String(dmp.bank) + "}";
+		String JSON = "{\"temperature\":" + String(temp_event.temperature) + ", \"pressure\":" + String(pressure_event.pressure) + ", \"mhdg\":" + String(mhdg) + ", \"ax\":" + String(dmp.accel.x) + ", \"ay\":" + String(dmp.accel.y) + ", \"az\":" + String(dmp.accel.z) + ", \"pitch\":" + String(dmp.pitch) + ", \"bank\":" + String(dmp.bank) + "}";
 		request->send_P(200, "application/json", &JSON[0]);
 	});
 	server.on("/home.html", HTTP_GET, [](AsyncWebServerRequest *request) {
