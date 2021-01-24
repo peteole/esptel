@@ -1,4 +1,4 @@
-// file for motion procession for artificial horizon and conpass
+// file for motion procession for artificial horizon and compass
 #define MPU9250_SENSOR
 #ifndef MPU9250DMP_H
 #define MPU9250DMP_H
