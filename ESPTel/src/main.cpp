@@ -7,7 +7,11 @@
 #include "MPU9250DMP.h"
 #include "dmp.h"
 #include <Wire.h>
- 
+
+float mx = 0.0; //mag flux
+float my = 0.0;
+float mz = 0.0;
+int mhdg;
 
 DNSServer dnsServer;
 AsyncWebServer server(80);
