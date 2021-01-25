@@ -121,7 +121,7 @@ function drawArtHor() {
     pitch = parseFloat(data.pitch) * 180 / Math.PI;
     bank = parseFloat(data.bank) * 180 / Math.PI - 180;
     alt = parseInt(44330 * (1.0 - Math.pow(data.pressure / 1013.25, 0.1903)));
-    mhdg = parseInt((data.mhdg) * 180 / Math.PI + 180);
+    mhdg = parseInt(Math.atan2(-(data.my), -(data.mx)) * 180 / Math.PI + 180);
     ax = parseFloat(data.ax);
     ay = parseFloat(data.ay);
     az = parseFloat(data.az);
