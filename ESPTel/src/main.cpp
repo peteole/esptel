@@ -8,10 +8,11 @@
 #include "dmp.h"
 #include <Wire.h>
 
-float mx = 0.0; //mag flux
+/*float mx = 0.0; //mag flux
 float my = 0.0;
 float mz = 0.0;
 int mhdg;
+*/
 
 DNSServer dnsServer;
 AsyncWebServer server(80);
@@ -20,12 +21,14 @@ Adafruit_BMP280 bmp; // use I2C interface
 Adafruit_Sensor *bmp_temp = bmp.getTemperatureSensor();
 Adafruit_Sensor *bmp_pressure = bmp.getPressureSensor();
 MPU9250DMP dmp;
+MPU9250 IMU(Wire, 0x68);
 
 void setup()
 {
 	Serial.begin(9600);
 	Wire.begin(0, 2);
 	dmp.begin();
+	//IMU.begin();
 	Serial.println(F("BMP280 Sensor event test"));
 
 	if (!bmp.begin(0x76))
@@ -47,12 +50,13 @@ void setup()
 		bmp_temp->getEvent(&temp_event);
 		bmp_pressure->getEvent(&pressure_event);
 		dmp.updateReadables();
-		mx = IMU.getMagX_uT();
+		/*mx = IMU.getMagX_uT();
 		my = IMU.getMagY_uT();
 		mz = IMU.getMagZ_uT();
 		mhdg = atan2(-my, -mx);
+		*/
 
-		String JSON = "{\"temperature\":" + String(temp_event.temperature) + ", \"pressure\":" + String(pressure_event.pressure) + ", \"mhdg\":" + String(mhdg) + ", \"ax\":" + String(dmp.accel.x) + ", \"ay\":" + String(dmp.accel.y) + ", \"az\":" + String(dmp.accel.z) + ", \"pitch\":" + String(dmp.pitch) + ", \"bank\":" + String(dmp.bank) + "}";
+		String JSON = "{\"temperature\":" + String(temp_event.temperature) + ", \"pressure\":" + String(pressure_event.pressure) + ", \"mhdg\":" + String(dmp.yaw) + ", \"ax\":" + String(dmp.accel.x) + ", \"ay\":" + String(dmp.accel.y) + ", \"az\":" + String(dmp.accel.z) + ", \"pitch\":" + String(dmp.pitch) + ", \"bank\":" + String(dmp.bank) + "}";
 		request->send_P(200, "application/json", &JSON[0]);
 	});
 	server.on("/home.html", HTTP_GET, [](AsyncWebServerRequest *request) {
