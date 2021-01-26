@@ -8,6 +8,10 @@
 #include "dmp.h"
 #include <Wire.h>
 
+float gx = 0.0; //gyro rate
+float gy = 0.0;
+float gz = 0.0;
+
 float mx = 0.0; //mag flux
 float my = 0.0;
 float mz = 0.0;
@@ -47,11 +51,14 @@ void setup()
 		bmp_temp->getEvent(&temp_event);
 		bmp_pressure->getEvent(&pressure_event);
 		dmp.updateReadables();
+		gx = dmp.mpu.getGyroX_rads();
+		gy = dmp.mpu.getGyroY_rads();
+		gz = dmp.mpu.getGyroZ_rads();
 		mx = dmp.mpu.getMagX_uT();
 		my = dmp.mpu.getMagY_uT();
 		mz = dmp.mpu.getMagZ_uT();
 
-		String JSON = "{\"temperature\":" + String(temp_event.temperature) + ", \"pressure\":" + String(pressure_event.pressure) + ", \"mx\":" + String(mx) + ", \"my\":" + String(my) + ", \"mz\":" + String(mz) + ", \"ax\":" + String(dmp.accel.x) + ", \"ay\":" + String(dmp.accel.y) + ", \"az\":" + String(dmp.accel.z) + ", \"pitch\":" + String(dmp.pitch) + ", \"bank\":" + String(dmp.bank) + "}";
+		String JSON = "{\"temperature\":" + String(temp_event.temperature) + ", \"pressure\":" + String(pressure_event.pressure) + ", \"gx\":" + String(gx) + ", \"gy\":" + String(gy) + ", \"gz\":" + String(gz) + ", \"mx\":" + String(mx) + ", \"my\":" + String(my) + ", \"mz\":" + String(mz) + ", \"ax\":" + String(dmp.accel.x) + ", \"ay\":" + String(dmp.accel.y) + ", \"az\":" + String(dmp.accel.z) + ", \"pitch\":" + String(dmp.pitch) + ", \"bank\":" + String(dmp.bank) + "}";
 		request->send_P(200, "application/json", &JSON[0]);
 	});
 	server.on("/home.html", HTTP_GET, [](AsyncWebServerRequest *request) {

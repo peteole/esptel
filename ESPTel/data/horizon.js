@@ -109,7 +109,8 @@ function drawScale(alt) {
         }
     }
     ctx.clearRect(width * 0.85, height / 2 - 25, width * 0.15, 50); //Alt on PFD
-    ctx.strokeText(alt - altBias, width * 0.87, height / 2 + 12);
+    ctx.strokeText(alt - altBias + " m", width * 0.87, height / 2 + 12);
+
     ctx.clearRect(width * 0.5 - 30, height - 25, 60, 25); //HDG on PFD
     ctx.strokeText(mhdg, width * 0.5 - 25, height);
 
