@@ -1,0 +1,19 @@
+{
+    "name": "GenericDMP",
+    "keywords": "dmp, artificial horizon, digital motion procession, gyro, accelerometer, MPU6050, GY-91",
+    "description": "Generic arduino library for digital motion procession (for artificial horizons etc). Does only include the logic for processing sensor reading, you will need to provide the methods for reading the sensors yourself (see examples).",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/peteole/dmp.git"
+    },
+    "authors": [
+        {
+            "name": "Ole Petersen",
+            "email": "peteole2707@gmail.com",
+            "maintainer": true
+        }
+    ],
+    "version": "1.0",
+    "frameworks": "arduino",
+    "platforms": "*"
+}
