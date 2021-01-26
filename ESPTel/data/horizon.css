@@ -1,0 +1,30 @@
+body{
+    background-color: rgb(116, 137, 150);
+}
+
+button {
+  background-color: #5c6a80; 
+  border: #1b1f25;
+  color: rgb(8, 8, 8);
+  padding: 10px 18px;
+  height: 200px;
+  width: 45%;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 26px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+button :hover {
+  background-color: #97a097;
+  color: rgb(107, 77, 77);
+}
+p,
+label {
+    font: 1rem 'Fira Sans', sans-serif;
+}
+a{
+   color: rgb(12, 68, 26);
+   font-size: 45px;
+}

@@ -6,6 +6,8 @@ button {
   border: #1b1f25;
   color: rgb(8, 8, 8);
   padding: 10px 18px;
+  height: 80px;
+  width: 30%;
   text-align: center;
   text-decoration: none;
   display: inline-block;

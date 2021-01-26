@@ -1,7 +1,7 @@
 var mhdg;
 var pitch = 0;
 var bank = 0;
-var acc;
+var gload;
 var ctx;
 var factor = 5;
 var c;
@@ -126,9 +126,9 @@ function drawArtHor() {
     ax = parseFloat(data.ax);
     ay = parseFloat(data.ay);
     az = parseFloat(data.az);
-    acc = (Math.sqrt(ax * ax + ay * ay + az * az));
-    const text = "ACC: " + acc.toFixed(2) + " m/s^2";
-    document.getElementById("acc-text").innerHTML = text;
+    gload = (Math.sqrt(ax * ax + ay * ay + az * az)) / 9.81;
+    const text = "G-Load: " + gload.toFixed(2);
+    document.getElementById("gload-text").innerHTML = text;
 
     c = document.getElementById("myCanvas");
     ctx = c.getContext("2d");
