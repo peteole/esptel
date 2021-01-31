@@ -3,6 +3,9 @@ var interval = 10;
 var response;
 var data;
 var alt;
+var altfloat;
+var altfloat0;
+var deltaAlt = 0;
 var altBias = 0;
 
 
