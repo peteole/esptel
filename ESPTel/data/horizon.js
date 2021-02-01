@@ -1,16 +1,3 @@
-var mhdg;
-var pitch = 0;
-var bank = 0;
-var gload;
-var ctx;
-var factor = 5;
-var c;
-var width = 600;
-var height = 400;
-var fwidth = 2.5 * width;
-var fheight = factor * height;
-
-
 function drawHor(pitch, bank) {
 
     ctx.translate(width / 2, height / 2);
@@ -41,6 +28,10 @@ function drawHor(pitch, bank) {
     ctx.strokeText("10", 10 * factor, -8 * factor);
     ctx.strokeText("10", -17 * factor, 12 * factor);
     ctx.strokeText("10", 10 * factor, 12 * factor);
+    ctx.strokeText("20", -17 * factor, -18 * factor);
+    ctx.strokeText("20", 10 * factor, -18 * factor);
+    ctx.strokeText("20", -17 * factor, 22 * factor);
+    ctx.strokeText("20", 10 * factor, 22 * factor);
 
 
     ctx.translate(0, -factor * pitch);
@@ -108,21 +99,24 @@ function drawScale(alt) {
             ctx.stroke();
         }
     }
-    ctx.clearRect(width * 0.85, height / 2 - 25, width * 0.15, 50); //Alt on PFD
-    ctx.strokeText(alt - altBias + " m", width * 0.87, height / 2 + 12);
+    ctx.clearRect(width * 0.83, height / 2 - 25, width * 0.17, 50); //Alt on PFD
+    ctx.strokeText(alt - altBias + " m", width * 0.85, height / 2 + 12);
 
     ctx.clearRect(width * 0.5 - 30, height - 25, 60, 25); //HDG on PFD
     ctx.strokeText(mhdg, width * 0.5 - 25, height);
 
-
 }
+
 function drawArtHor() {
 
     getData();
     pitch = parseFloat(data.pitch) * 180 / Math.PI;
     bank = parseFloat(data.bank) * 180 / Math.PI - 180;
     altfloat = parseFloat(44330 * (1.0 - Math.pow(data.pressure / 1013.25, 0.1903)));
-    deltaAlt = altfloat - altfloat0;
+    vs = (vs * 4 + (altfloat - altfloat0) * 6) / 10; //Glättung der vertical speed
+    if (vs > 0.3 || vs < -0.3) {
+        sound();
+    }
     altfloat0 = altfloat;
     alt = parseInt(altfloat);
     mhdg = parseInt(Math.atan2(-(data.my), -(data.mx)) * 180 / Math.PI + 180);
@@ -132,6 +126,8 @@ function drawArtHor() {
     gload = (Math.sqrt(ax * ax + ay * ay + az * az)) / 9.81;
     const text = "G-Load: " + gload.toFixed(2);
     document.getElementById("gload-text").innerHTML = text;
+    const text2 = "v/s: " + vs.toFixed(1) + "m/s";
+    document.getElementById("vs-text").innerHTML = text2;
 
     c = document.getElementById("myCanvas");
     ctx = c.getContext("2d");
@@ -143,10 +139,8 @@ function drawArtHor() {
 }
 
 
-
 function start() {
     setInterval(drawArtHor, 100);
-
 }
 
 

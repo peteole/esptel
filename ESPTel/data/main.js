@@ -2,11 +2,22 @@ var myVar;
 var interval = 10;
 var response;
 var data;
-var alt;
-var altfloat;
-var altfloat0;
-var deltaAlt = 0;
+var alt = 0; //alt as int
+var altfloat = 0; //altitude as float
+var altfloat0 = 0; //last value
 var altBias = 0;
+var mhdg;
+var pitch = 0;
+var bank = 0;
+var gload;
+var vs = 0.0; //vertical speed
+var ctx;
+var factor = 5; //display factor
+var c;
+var width = 600; //pixel size of horizon canvas
+var height = 400;
+var fwidth = 2.5 * width;
+var fheight = factor * height;
 
 
 class Voice {
@@ -56,11 +67,18 @@ function displayData() {
     const text = "Temperatur: " + data.temperature + " °C";
     document.getElementById("temperature-text").innerHTML = text;
 
-    alt = parseInt(44330 * (1.0 - Math.pow(data.pressure / 1013.25, 0.1903)));
+    altfloat = parseFloat(44330 * (1.0 - Math.pow(data.pressure / 1013.25, 0.1903)));
+    vs = (vs * 4 + (altfloat - altfloat0) * 6) / 10; //Glättung der vertical speed
+    if (vs > 0.3 || vs < -0.3) {
+        sound();
+    }
+    altfloat0 = altfloat;
+    alt = parseInt(altfloat);
+
     const height = alt - altBias;
     const text2 = "height: " + height + " m";
     document.getElementById("height-text").innerHTML = text2;
-    const text3 = "altitude: " + alt + " m";
+    const text3 = "altitude: " + alt + " m    v/s:" + vs.toFixed(2); + "m/s";
     document.getElementById("altitude-text").innerHTML = text3;
     const text4 = "accX: " + data.ax.toFixed(2) + " accY:" + data.ay.toFixed(2) + " accZ:" + data.az.toFixed(2);
     document.getElementById("acc-text").innerHTML = text4;
@@ -94,6 +112,23 @@ function speechLoop() {
 
 function stopSpeechLoop() {
     clearInterval(myVar);
+}
+/* Vario audio
+*/
+var context = new AudioContext()
+var o = context.createOscillator()
+var g = context.createGain()
+var frequency = 440.0
+o.frequency.value = frequency
+o.connect(g)
+g.connect(context.destination)
+o.start(0)
+function sound() {
+    g.gain.exponentialRampToValueAtTime(1, context.currentTime + 0.1)
+    frequency = 440.0 + vs * 100
+    o.frequency.value = frequency
+    context.resume()
+    g.gain.exponentialRampToValueAtTime(0.00001, context.currentTime + 5)
 }
 
 
