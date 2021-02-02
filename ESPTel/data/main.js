@@ -78,7 +78,7 @@ function displayData() {
     const height = alt - altBias;
     const text2 = "height: " + height + " m";
     document.getElementById("height-text").innerHTML = text2;
-    const text3 = "altitude: " + alt + " m    v/s:" + vs.toFixed(2); + "m/s";
+    const text3 = "altitude: " + alt + " m      v/s: " + vs.toFixed(2) + " m/s";
     document.getElementById("altitude-text").innerHTML = text3;
     const text4 = "accX: " + data.ax.toFixed(2) + " accY:" + data.ay.toFixed(2) + " accZ:" + data.az.toFixed(2);
     document.getElementById("acc-text").innerHTML = text4;
@@ -94,9 +94,8 @@ function altreset() {
     altBias = alt;
 }
 function sayData() {
-    //let text = document.getElementById("temperature-text").innerText;
+    
     let read = document.getElementById("height-text").innerText;
-
 
     if (voice != null) {
         voice.speak(read);

@@ -126,7 +126,7 @@ function drawArtHor() {
     gload = (Math.sqrt(ax * ax + ay * ay + az * az)) / 9.81;
     const text = "G-Load: " + gload.toFixed(2);
     document.getElementById("gload-text").innerHTML = text;
-    const text2 = "v/s: " + vs.toFixed(1) + "m/s";
+    const text2 = "v/s: " + vs.toFixed(1) + " m/s";
     document.getElementById("vs-text").innerHTML = text2;
 
     c = document.getElementById("myCanvas");
